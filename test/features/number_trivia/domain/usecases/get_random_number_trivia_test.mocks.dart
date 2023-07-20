@@ -10,8 +10,8 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:number_trivia_app/features/core/error/failures.dart' as _i5;
 import 'package:number_trivia_app/features/number_trivia/domain/entities/number_trivia.dart'
     as _i6;
-
-import 'get_random_number_trivia_test.dart' as _i3;
+import 'package:number_trivia_app/features/number_trivia/domain/repositories/number_trivia_repository.dart'
+    as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -34,11 +34,11 @@ class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
         );
 }
 
-/// A class which mocks [MockNumberTriviaRepository].
+/// A class which mocks [NumberTriviaRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMockNumberTriviaRepository extends _i1.Mock
-    implements _i3.MockNumberTriviaRepository {
+class MockNumberTriviaRepository extends _i1.Mock
+    implements _i3.NumberTriviaRepository {
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i6.NumberTrivia>> getConcreteNumberTrivia(
           int? number) =>
