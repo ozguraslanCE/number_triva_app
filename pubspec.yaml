@@ -41,7 +41,8 @@ dependencies:
   # Defines json the annotations
   json_annotation: ^4.8.1
   # Remote API- Connectivity discover network connectivity and configure
-  connectivity_plus: ^4.0.1
+  # connectivity_plus: ^4.0.1
+  internet_connection_checker_plus: ^2.0.0
   http: ^1.1.0
   # State Management
   flutter_bloc: ^8.1.3
