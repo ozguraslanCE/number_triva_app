@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/error/failures.dart';
+import '../../../core/usecases/usecase.dart';
 import '../../../core/util/input_converter.dart';
 import '../../domain/entities/number_trivia.dart';
 import '../../domain/usecases/get_concrete_number_trivia.dart';
@@ -30,10 +32,10 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
   FutureOr<void> _onEvent(
     NumberTriviaEvent event,
     Emitter<NumberTriviaState> emit,
-  ) {
+  ) async {
     if (event is GetTriviaForConcreteNumber) {
       emit(const Empty());
-      inputConverter.stringToUnsignedInt(event.numberString).fold(
+      await inputConverter.stringToUnsignedInt(event.numberString).fold(
         (l) {
           emit(const Error(message: invalidInputFailureMessage));
         },
@@ -41,17 +43,28 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
           emit(const Loading());
           final failureOrTrivia =
               await getConcreteNumberTrivia(Params(number: number));
-          failureOrTrivia.fold(
-            (failure) {
-              emit(Error(message: _mapFailureMessage(failure)));
-            },
-            (trivia) {
-              emit(Loaded(trivia: trivia));
-            },
-          );
+          _eitherLoadedOrErrorState(failureOrTrivia, emit);
         },
       );
+    } else if (event is GetTriviaForRandomNumber) {
+      emit(const Loading());
+      final failureOrTrivia = await getRandomNumberTrivia(NoParams());
+      _eitherLoadedOrErrorState(failureOrTrivia, emit);
     }
+  }
+
+  void _eitherLoadedOrErrorState(
+    Either<Failure, NumberTrivia> failureOrTrivia,
+    Emitter<NumberTriviaState> emit,
+  ) {
+    failureOrTrivia.fold(
+      (failure) {
+        emit(Error(message: _mapFailureMessage(failure)));
+      },
+      (trivia) {
+        emit(Loaded(trivia: trivia));
+      },
+    );
   }
 
   String _mapFailureMessage(Failure failure) {

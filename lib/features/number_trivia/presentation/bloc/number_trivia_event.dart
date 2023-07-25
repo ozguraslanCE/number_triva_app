@@ -26,9 +26,7 @@ class GetTriviaForConcreteNumber extends NumberTriviaEvent {
 }
 
 class GetTriviaForRandomNumber extends NumberTriviaEvent {
-  final String numberString;
-
-  const GetTriviaForRandomNumber(this.numberString);
+  const GetTriviaForRandomNumber();
   @override
-  List<Object?> get props => [numberString];
+  List<Object?> get props => [];
 }
